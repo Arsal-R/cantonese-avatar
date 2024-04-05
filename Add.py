@@ -21,16 +21,17 @@ load_dotenv()
 openai = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def upload_file(file_path):
+    print("Uploading the file...")
     with open(file_path, "rb") as file_obj:
         up_file = openai.files.create(
             file=file_obj,
             purpose="assistants"
         )
+
     print(up_file.id)
-    # Update .env with new FILE_ID
     update_env_file(up_file.id)
     return up_file.id
 
 # Example usage
-file_path = "File/Upload.pdf"
+file_path = input("FILE PATH : ")
 upload_file(file_path)

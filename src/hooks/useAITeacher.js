@@ -2,6 +2,17 @@ const { create } = require("zustand");
 
 export const teachers = ["Nanami", "Naoki"];
 
+// Helper function to wrap a fetch call with a timeout
+const fetchWithTimeout = (resource, options, timeout = 13000) => {
+    return new Promise((resolve, reject) => {
+        const timeoutId = setTimeout(() => reject(new Error('Request timed out')), timeout);
+        fetch(resource, options)
+            .then(response => response.ok ? resolve(response) : reject(new Error('Failed to fetch')))
+            .catch(reject)
+            .finally(() => clearTimeout(timeoutId));
+    });
+};
+
 export const useAITeacher = create((set, get) => ({
     messages: [],
     currentMessage: null,
@@ -56,37 +67,42 @@ export const useAITeacher = create((set, get) => ({
         console.log(data)
     },
     askAI: async (question, cantonese, prompt) => {
-        if (!question) {
-            return;
-        }
+        if (!question) return;
+
         const message = {
             question,
             id: get().messages.length,
         };
-        set(() => ({
-            loading: true,
-        }));
+        set(() => ({ loading: true }));
 
         const speech = get().speech;
+        const url = `/api/ai?question=${encodeURIComponent(question)}&speech=${encodeURIComponent(speech)}&prompt=${encodeURIComponent(prompt)}`;
 
-        // Ask AI
-        const res = await fetch(`/api/ai?question=${question}&speech=${speech}&prompt=${prompt}`);
-        const data = await res.json();
+        try {
+            const data = await fetchWithTimeout(url, {}).then((res) => res.json());
+            console.log('Data is :', data.answer);
+            message.answer = data.answer;
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            // Attempt to retry once after 13 seconds
+            try {
+                const data = await fetchWithTimeout(url, {}).then((res) => res.json());
+                console.log('Data is :', data.answer);
+                message.answer = data.answer;
+            } catch (retryError) {
+                console.error('Error on retry:', retryError);
+                // Use a template answer after retry fails
+                message.answer = "Sorry, there was a server error.";
+            }
+        }
 
-        console.log('Data is :')
-        console.log(data.answer)
-        message.answer = data.answer;
         message.speech = speech;
-
-        set(() => ({
-            currentMessage: message,
-        }));
-
+        set(() => ({ currentMessage: message }));
         set((state) => ({
             messages: [...state.messages, message],
             loading: false,
         }));
-        console.log(message)
+        console.log(message);
         get().playMessage(message, cantonese);
     },
     playMessage: async (message, cantonese) => {
