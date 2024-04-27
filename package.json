@@ -12,6 +12,7 @@
     "dependencies": {
         "@aws-sdk/client-polly": "^3.535.0",
         "@aws-sdk/credential-provider-env": "^3.535.0",
+        "@google/generative-ai": "^0.8.0",
         "@react-three/drei": "^9.99.3",
         "@react-three/fiber": "^8.15.16",
         "dotenv": "^16.4.5",

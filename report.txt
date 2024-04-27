@@ -1,0 +1,32 @@
+*Daily Work Report - 26-April-2024*
+
+Following is a list of tasks I did today,
+
+* Started writing some code in js sample file for testing if it can understand and work like gpt 3 used to work with given prompts.
+* Created a new prompt variable to be used as a conversation storing variable. 
+* Created a whole prompt structure instructing the gpt that this is the whole conversation between user and gemini.
+* Updated the prompt with adding more instructions to tell that gemini is an AI model and some more along with the instruction stating the gemini to look towards system prompt.
+* Added a sample system prompt for testing the prompt. 
+* Updated the code to use this system prompt to check the outcome to see if gemini was able to understand the system prompt and respond accordingly and it worked.
+* Checked the running avatar chatbot version and found something that it could not remember the conversation with user.
+* Started checking gemini if it is able to understand the conversation like in the same way as I used to do with gpt 3.
+* I was not confirmed whether I could make that all testing mechanism in nodejs, so wrote the initial code again in python.
+* Created a function named get_response which takes in the prompt and returns the response.
+* Added a loop to allow the conversation keep on going to know if gemini is able to understand the user conversation and know respond with the previous question.
+* After completing the code in python, tested it and after some attempts and further modifications, made it working.
+* Updated the main route.js file to include the working code for the adding system prompt. The conversation history is not added as wasn't discussed and also time wasn't left.
+
+
+
+Steps to run the whatsapp web js:
+
+1. Open the folder where the whatsapp chatbot files are.
+2. Open cmd in the folder to run commands.
+3. Make sure that chrome is installed and is in the default path of installation.
+4. Make sure that python is installed and added to path.
+5. Ensure the nodejs is installed on system with npm, npx, and node commands working.
+6. In the cmd, write the command to ensure the modules of nodejs are installed, "npm install".
+7. In cmd, write the following command to make sure flask is installed in python: "pip install flask"
+8. For finally running, first clear cmd by "cls" command.
+9. Run the command: "python Checker.py" to start it.
+10. Wait for the browser window to open and make sure to first interact with it like clicking on browser screen to allow a human like action.
